@@ -1923,9 +1923,16 @@ namespace ICSharpCode.Decompiler.CSharp.Syntax
 				}
 			}
 
+			// HACK: Rename 
+			int i = 0;
 			foreach (IParameter p in invokeMethod.Parameters)
 			{
-				decl.Parameters.Add(ConvertParameter(p));
+				var param = ConvertParameter(p);
+
+				if (string.IsNullOrEmpty(param.Name))
+					param.Name = "P_" + i++;
+				
+				decl.Parameters.Add(param);
 			}
 
 			if (this.ShowTypeParameters && this.ShowTypeParameterConstraints)
